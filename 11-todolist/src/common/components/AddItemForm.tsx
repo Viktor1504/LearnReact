@@ -3,11 +3,11 @@ import TextField from '@mui/material/TextField';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IconButton from "@mui/material/IconButton";
 
-type PropsType = {
+type Props = {
 	addItem: (title: string) => void
 }
 
-export const AddItemForm = ({addItem}: PropsType) => {
+export const AddItemForm = ({addItem}: Props) => {
 
 	const [title, setTitle] = useState('')
 	const [error, setError] = useState<string | null>(null)
