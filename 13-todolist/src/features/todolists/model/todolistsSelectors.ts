@@ -1,3 +1,3 @@
-import {RootState} from "../../../app/store";
+import { RootState } from "../../../app/store"
 
 export const selectTodolists = (state: RootState) => state.todolists
