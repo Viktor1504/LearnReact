@@ -1,5 +1,10 @@
 {
   "name": "1-lesson",
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,6 +26,7 @@
     "react-redux": "^9.1.1",
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
     "typescript": "^5.3.3",
     "uuid": "^9.0.1",
     "web-vitals": "^3.5.1"
