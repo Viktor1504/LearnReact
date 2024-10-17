@@ -6,9 +6,10 @@ import { filterButtonsContainerSx } from "./FilterTasksButtons.styles"
 
 type Props = {
   todolist: DomainTodolist
+  disabled?: boolean
 }
 
-export const FilterTasksButtons = ({ todolist }: Props) => {
+export const FilterTasksButtons = ({ todolist, disabled }: Props) => {
   const { filter, id } = todolist
 
   const dispatch = useAppDispatch()
@@ -18,7 +19,7 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
   }
 
   return (
-    <Box sx={filterButtonsContainerSx}>
+    <Box sx={filterButtonsContainerSx(!!disabled)}>
       <Button
         variant={filter === "all" ? "outlined" : "text"}
         color={"inherit"}

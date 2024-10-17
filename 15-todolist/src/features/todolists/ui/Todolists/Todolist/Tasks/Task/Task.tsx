@@ -10,13 +10,15 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
+import { ListItemButton } from "@mui/material"
 
 type Props = {
   task: DomainTask
   todolist: DomainTodolist
+  disable?: boolean
 }
 
-export const Task = ({ task, todolist }: Props) => {
+export const Task = ({ task, todolist, disable }: Props) => {
   const dispatch = useAppDispatch()
 
   const removeTaskHandler = () => {
@@ -33,7 +35,7 @@ export const Task = ({ task, todolist }: Props) => {
   }
 
   return (
-    <ListItem key={task.id} sx={getListItemSx(task.status === TaskStatus.Completed)}>
+    <ListItemButton sx={getListItemSx(task.status === TaskStatus.Completed)} disabled={disable}>
       <div>
         <Checkbox checked={task.status === TaskStatus.Completed} onChange={changeTaskStatusHandler} />
         <EditableSpan value={task.title} onChange={changeTaskTitleHandler} />
@@ -41,6 +43,6 @@ export const Task = ({ task, todolist }: Props) => {
       <IconButton onClick={removeTaskHandler}>
         <DeleteIcon />
       </IconButton>
-    </ListItem>
+    </ListItemButton>
   )
 }
