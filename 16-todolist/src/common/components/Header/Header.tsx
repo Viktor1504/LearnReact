@@ -10,17 +10,24 @@ import { selectAppStatus, selectThemeMode } from "../../../app/appSelectors"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { MenuButton } from "common/components"
+import { selectIsLoggedIn } from "../../../features/auth/model/authSelectors"
+import { logoutTC } from "../../../features/auth/model/auth-reducer"
 
 export const Header = () => {
   const dispatch = useAppDispatch()
 
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectAppStatus)
-
   const theme = getTheme(themeMode)
+
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const changeModeHandler = () => {
     dispatch(changeThemeAC(themeMode === "light" ? "dark" : "light"))
+  }
+
+  const logoutBtnHandler = () => {
+    dispatch(logoutTC())
   }
 
   return (
@@ -30,8 +37,7 @@ export const Header = () => {
           <MenuIcon />
         </IconButton>
         <div>
-          <MenuButton>Login</MenuButton>
-          <MenuButton>Logout</MenuButton>
+          {isLoggedIn && <MenuButton onClick={logoutBtnHandler}>Logout</MenuButton>}
           <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
           <Switch color={"default"} onChange={changeModeHandler} />
         </div>
