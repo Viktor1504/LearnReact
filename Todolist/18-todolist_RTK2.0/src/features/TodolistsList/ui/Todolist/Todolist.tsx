@@ -1,27 +1,27 @@
-import React, { useCallback, useEffect } from "react";
-import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
-import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
-import { Task } from "./Task/Task";
-import { FilterValuesType, TodolistDomainType } from "../../model/todolists.reducer";
-import { fetchTasks } from "../../model/tasks.reducer";
-import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { Button, IconButton } from "@mui/material";
-import { Delete } from "@mui/icons-material";
-import { TaskStatuses } from "common/enums";
-import { TaskType } from "../../api/todolists-api";
+import React, { useCallback, useEffect } from 'react'
+import { AddItemForm } from 'common/components/AddItemForm/AddItemForm'
+import { EditableSpan } from 'common/components/EditableSpan/EditableSpan'
+import { Task } from './Task/Task'
+import { FilterValuesType, TodolistDomainType } from '../../model/todolists.reducer'
+import { tasksActions } from '../../model/tasks.reducer'
+import { useAppDispatch } from 'common/hooks/useAppDispatch'
+import { Button, IconButton } from '@mui/material'
+import { Delete } from '@mui/icons-material'
+import { TaskStatuses } from 'common/enums'
+import { TaskType } from '../../api/todolists-api'
 
 type PropsType = {
-  todolist: TodolistDomainType;
-  tasks: Array<TaskType>;
-  changeFilter: (value: FilterValuesType, todolistId: string) => void;
-  addTask: (title: string, todolistId: string) => void;
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
-  removeTask: (taskId: string, todolistId: string) => void;
-  removeTodolist: (id: string) => void;
-  changeTodolistTitle: (id: string, newTitle: string) => void;
-  demo?: boolean;
-};
+  todolist: TodolistDomainType
+  tasks: Array<TaskType>
+  changeFilter: (value: FilterValuesType, todolistId: string) => void
+  addTask: (title: string, todolistId: string) => void
+  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
+  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+  removeTask: (taskId: string, todolistId: string) => void
+  removeTodolist: (id: string) => void
+  changeTodolistTitle: (id: string, newTitle: string) => void
+  demo?: boolean
+}
 
 export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
     if (demo) {
       return;
     }
-    dispatch(fetchTasks(props.todolist.id));
+    dispatch(tasksActions.fetchTasks(props.todolist.id));
   }, []);
 
   const addTask = useCallback(
