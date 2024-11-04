@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { appActions } from "app/app.reducer";
+import { appActions } from "app/initializeAppTC";
 import { todolistsThunks } from "features/TodolistsList/todolists.reducer";
 import {
   AddTaskArgType,
@@ -157,15 +157,6 @@ export const tasksActions = slice.actions;
 export const tasksThunks = { fetchTasks, addTask, updateTask, removeTask };
 
 // types
-export type UpdateDomainTaskModelType = {
-  title?: string;
-  description?: string;
-  status?: TaskStatuses;
-  priority?: TaskPriorities;
-  startDate?: string;
-  deadline?: string;
-};
-
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
