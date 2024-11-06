@@ -2,8 +2,7 @@ import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Unstable_Grid2"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "common/hooks"
-import { fetchTodolistsTC } from "../../model/todolists-reducer"
-import { selectTodolists } from "../../model/todolistsSelectors"
+import { fetchTodolistsTC, selectTodolists } from "../../model/todolistsSlice"
 import { Todolist } from "./Todolist/Todolist"
 
 export const Todolists = () => {
@@ -13,11 +12,11 @@ export const Todolists = () => {
 
   useEffect(() => {
     dispatch(fetchTodolistsTC())
-  }, [])
+  }, [dispatch])
 
   return (
     <>
-      {todolists.map((tl) => {
+      {todolists?.map((tl) => {
         return (
           <Grid key={tl.id}>
             <Paper sx={{ p: "0 20px 20px 20px" }}>
