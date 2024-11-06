@@ -1,76 +1,49 @@
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {
-  AppBar,
-  Button,
-  CircularProgress,
-  Container,
-  IconButton,
-  LinearProgress,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { Menu } from "@mui/icons-material";
-import { Login } from "features/auth/Login";
-import "./App.css";
-import { TodolistsList } from "features/TodolistsList/TodolistsList";
-import { ErrorSnackbar } from "common/components";
-import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
-import { authThunks } from "../features/auth/auth.reducer";
-import { useAppDispatch } from "./store";
+import CircularProgress from "@mui/material/CircularProgress"
+import CssBaseline from "@mui/material/CssBaseline"
+import { ThemeProvider } from "@mui/material/styles"
+import { ErrorSnackbar, Header } from "common/components"
+import { ResultCode } from "common/enums"
+import { useAppDispatch, useAppSelector } from "common/hooks"
+import { getTheme } from "common/theme"
+import { useEffect, useState } from "react"
+import { Outlet } from "react-router-dom"
+import { useMeQuery } from "../features/auth/api/authAPI"
+import s from "./App.module.css"
+import { selectThemeMode, setIsLoggedIn } from "./appSlice"
 
-function App() {
-  const status = useSelector(selectAppStatus);
-  const isInitialized = useSelector(selectIsInitialized);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+export const App = () => {
+  const themeMode = useAppSelector(selectThemeMode)
 
-  const dispatch = useAppDispatch();
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  const dispatch = useAppDispatch()
+
+  const { data, isLoading } = useMeQuery()
 
   useEffect(() => {
-    dispatch(authThunks.initializeApp());
-  }, []);
-
-  const logoutHandler = useCallback(() => {
-    dispatch(authThunks.logout());
-  }, []);
-
-  if (!isInitialized) {
-    return (
-      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
-        <CircularProgress />
-      </div>
-    );
-  }
+    if (!isLoading) {
+      setIsInitialized(true)
+      if (data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
+      }
+    }
+  }, [isLoading, data])
 
   return (
-    <BrowserRouter>
-      <div className="App">
-        <ErrorSnackbar />
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Menu />
-            </IconButton>
-            <Typography variant="h6">News</Typography>
-            {isLoggedIn && (
-              <Button color="inherit" onClick={logoutHandler}>
-                Log out
-              </Button>
-            )}
-          </Toolbar>
-          {status === "loading" && <LinearProgress />}
-        </AppBar>
-        <Container fixed>
-          <Routes>
-            <Route path={"/"} element={<TodolistsList />} />
-            <Route path={"/login"} element={<Login />} />
-          </Routes>
-        </Container>
-      </div>
-    </BrowserRouter>
-  );
+    <ThemeProvider theme={getTheme(themeMode)}>
+      <CssBaseline />
+      {isInitialized && (
+        <>
+          <Header />
+          <Outlet />
+        </>
+      )}
+      {!isInitialized && (
+        <div className={s.circularProgressContainer}>
+          <CircularProgress size={150} thickness={3} />
+        </div>
+      )}
+      <ErrorSnackbar />
+    </ThemeProvider>
+  )
 }
-
-export default App;
