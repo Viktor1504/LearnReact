@@ -1,81 +1,47 @@
-import React, { useCallback, useEffect } from "react";
-import "./App.css";
-import { TodolistsList } from "../features/TodolistsList/ui/TodolistsList";
-import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
-import { useSelector } from "react-redux";
-import { initializeAppTC } from "app/app.reducer";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login } from "features/auth/ui/Login";
-import { logoutTC } from "features/auth/model/authSlice";
-import {
-  AppBar,
-  Button,
-  CircularProgress,
-  Container,
-  IconButton,
-  LinearProgress,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { Menu } from "@mui/icons-material";
-import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { selectIsLoggedIn } from "features/auth/model/auth.selectors";
-import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
+import CssBaseline from "@mui/material/CssBaseline"
+import { ThemeProvider } from "@mui/material/styles"
+import { ErrorSnackbar, Header } from "common/components"
+import { useAppDispatch, useAppSelector } from "common/hooks"
+import { getTheme } from "common/theme"
+import { useEffect, useState } from "react"
+import { Outlet } from "react-router-dom"
+import CircularProgress from "@mui/material/CircularProgress"
+import s from "./App.module.css"
+import { selectThemeMode, setIsLoggedIn } from "./appSlice"
+import { useMeQuery } from "../features/auth/api/authApi"
+import { ResultCode } from "common/enums"
 
-type PropsType = {
-  demo?: boolean;
-};
+export const App = () => {
+  const [isInitialized, setIsInitialized] = useState(false)
+  const { data, isLoading } = useMeQuery()
+  const themeMode = useAppSelector(selectThemeMode)
 
-function App({ demo = false }: PropsType) {
-  const status = useSelector(selectAppStatus);
-  const isInitialized = useSelector(selectIsInitialized);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(initializeAppTC());
-  }, []);
-
-  const logoutHandler = useCallback(() => {
-    dispatch(logoutTC());
-  }, []);
-
-  if (!isInitialized) {
-    return (
-      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
-        <CircularProgress />
-      </div>
-    );
-  }
+    if (!isLoading) {
+      setIsInitialized(true)
+      if (data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
+      }
+    }
+  }, [isLoading, data])
 
   return (
-    <BrowserRouter>
-      <div className="App">
-        <ErrorSnackbar />
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Menu />
-            </IconButton>
-            <Typography variant="h6">News</Typography>
-            {isLoggedIn && (
-              <Button color="inherit" onClick={logoutHandler}>
-                Log out
-              </Button>
-            )}
-          </Toolbar>
-          {status === "loading" && <LinearProgress />}
-        </AppBar>
-        <Container fixed>
-          <Routes>
-            <Route path={"/"} element={<TodolistsList demo={demo} />} />
-            <Route path={"/login"} element={<Login />} />
-          </Routes>
-        </Container>
-      </div>
-    </BrowserRouter>
-  );
+    <ThemeProvider theme={getTheme(themeMode)}>
+      <CssBaseline />
+      {isInitialized && (
+        <>
+          <Header />
+          <Outlet />
+        </>
+      )}
+      {!isInitialized && (
+        <div className={s.circularProgressContainer}>
+          <CircularProgress size={150} thickness={3} />
+        </div>
+      )}
+      <ErrorSnackbar />
+    </ThemeProvider>
+  )
 }
-
-export default App;
