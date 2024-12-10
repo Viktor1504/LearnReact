@@ -1,8 +1,8 @@
 import { instance } from "common/instance"
 import { BaseResponse } from "common/types"
 import { baseApi } from "../../../app/baseApi"
-import { DomainTodolist } from "../model/todolistsSlice"
 import { Todolist } from "./todolistsApi.types"
+import { DomainTodolist } from "../lib/types/types"
 
 export const todolistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -53,7 +53,6 @@ export const {
   useRemoveTodolistMutation,
   useUpdateTodolistTitleMutation,
 } = todolistsApi
-
 
 export const _todolistsApi = {
   getTodolists() {

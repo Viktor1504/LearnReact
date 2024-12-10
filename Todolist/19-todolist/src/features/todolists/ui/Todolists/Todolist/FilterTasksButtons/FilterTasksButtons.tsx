@@ -2,8 +2,8 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import { useAppDispatch } from "common/hooks"
 import { todolistsApi } from "../../../../api/todolistsApi"
-import { DomainTodolist, FilterValuesType } from "../../../../model/todolistsSlice"
 import { filterButtonsContainerSx } from "./FilterTasksButtons.styles"
+import { DomainTodolist, FilterValues } from "../../../../lib/types/types"
 
 type Props = {
   todolist: DomainTodolist
@@ -14,7 +14,7 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const changeFilterTasksHandler = (filter: FilterValuesType) => {
+  const changeFilterTasksHandler = (filter: FilterValues) => {
     dispatch(
       todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
         const index = state.findIndex((tl) => tl.id === id)

@@ -11,8 +11,6 @@ import { getTheme } from "common/theme"
 import { changeTheme, selectAppStatus, selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "../../../app/appSlice"
 import { baseApi } from "../../../app/baseApi"
 import { useLogoutMutation } from "../../../features/auth/api/authAPI"
-import { clearTasks } from "../../../features/todolists/model/tasksSlice"
-import { clearTodolists } from "../../../features/todolists/model/todolistsSlice"
 
 export const Header = () => {
   const dispatch = useAppDispatch()
@@ -38,7 +36,7 @@ export const Header = () => {
         }
       })
       .then(() => {
-        dispatch(baseApi.util.invalidateTags(["Todolist", "Task"]))
+        dispatch(baseApi.util.invalidateTags(["Todolist", "TaskList"]))
       })
   }
 
