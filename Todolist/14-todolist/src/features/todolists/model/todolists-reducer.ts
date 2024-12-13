@@ -1,4 +1,3 @@
-import { v1 } from "uuid"
 import { Todolist } from "../api/todolistsApi.types"
 import { Dispatch } from "redux"
 import { todolistsApi } from "../api/todolistsApi"

@@ -16,7 +16,7 @@ export const Todolists = () => {
     todolistsApi.getTodolists().then((res) => {
       dispatch(setTodolistsAC(res.data))
     })
-  }, [])
+  }, [dispatch])
 
   return (
     <>

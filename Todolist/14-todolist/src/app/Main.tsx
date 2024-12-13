@@ -3,7 +3,7 @@ import Grid from "@mui/material/Unstable_Grid2"
 import React from "react"
 import { AddItemForm } from "common/components"
 import { useAppDispatch } from "common/hooks"
-import { addTodolistAC, addTodolistTC } from "../features/todolists/model/todolists-reducer"
+import { addTodolistTC } from "../features/todolists/model/todolists-reducer"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
 
 export const Main = () => {

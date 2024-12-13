@@ -69,20 +69,6 @@ export const addTaskAC = (payload: { task: DomainTask }) => {
   } as const
 }
 
-export const changeTaskStatusAC = (payload: { taskId: string; status: TaskStatus; todolistId: string }) => {
-  return {
-    type: "CHANGE_TASK_STATUS",
-    payload,
-  } as const
-}
-
-export const changeTaskTitleAC = (payload: { taskId: string; title: string; todolistId: string }) => {
-  return {
-    type: "CHANGE_TASK_TITLE",
-    payload,
-  } as const
-}
-
 export const setTasksAC = (payload: { todolistId: string; tasks: DomainTask[] }) => {
   return {
     type: "SET-TASKS",

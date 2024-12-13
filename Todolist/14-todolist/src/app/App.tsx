@@ -15,7 +15,7 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(fetchTodolistsTC)
-  }, [])
+  }, [dispatch])
 
   return (
     <ThemeProvider theme={getTheme(themeMode)}>
